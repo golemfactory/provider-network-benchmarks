@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import asyncio
-import base64
 from datetime import datetime
 import pathlib
 import sys
@@ -12,6 +11,7 @@ from yapapi.payload import vm
 examples_dir = pathlib.Path(__file__).resolve().parent.parent
 sys.path.append(str(examples_dir))
 
+CALLS_PER_SECOND = 5
 
 from utils import (
     build_parser,
@@ -37,7 +37,7 @@ class ChainlinkExample(Service):
         future_result = script.run(
             "/bin/sh",
             "-c",
-            f"python chainlink_request.py",
+            f"python chainlink_request.py --calls-per-second {CALLS_PER_SECOND}",
         )
         yield script
 
