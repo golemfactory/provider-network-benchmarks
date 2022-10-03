@@ -77,11 +77,11 @@ class Request:
         # Make call to latestRoundData()
         latestData = contract.functions.latestRoundData().call()
         # accessing 'answer' field
-        golem_usd_price = latestData[1] / 100_000_000
+        usd_price = latestData[1] / 100_000_000
 
         request_time = (time.time_ns() - request_time) / 1_000_000
         print(
-            f"{iteration}.{batch_iteration}:\t{request_time}ms\t GLM/USD {golem_usd_price}"
+            f"{iteration}.{batch_iteration}:\t{request_time}ms\t USD {usd_price}"
         )
 
     async def batch(
@@ -110,9 +110,11 @@ async def main():
     parser.add_argument(
         "-t", "--threads", default=-1, type=int, help="Number of threads"
     )
+    # RPC URL from here https://chainlist.org/chain/1
     parser.add_argument(
         "-r", "--rpc", default="https://rpc.ankr.com/eth", type=str, help="RPC URL"
     )
+    # Contract address from here https://docs.chain.link/docs/data-feeds/price-feeds/addresses/
     parser.add_argument(
         "-c",
         "--contract",

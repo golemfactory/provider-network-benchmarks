@@ -11,7 +11,8 @@ from yapapi.payload import vm
 examples_dir = pathlib.Path(__file__).resolve().parent.parent
 sys.path.append(str(examples_dir))
 
-CALLS_PER_SECOND = 5
+CALLS_PER_SECOND = 10_000
+ITERATIONS = 10
 
 from utils import (
     build_parser,
@@ -37,7 +38,9 @@ class ChainlinkExample(Service):
         future_result = script.run(
             "/bin/sh",
             "-c",
-            f"python chainlink_request.py --calls-per-second {CALLS_PER_SECOND}",
+            f"python /golem/run/chainlink_request.py \
+                --batch {CALLS_PER_SECOND} \
+                --iterations {ITERATIONS}",
         )
         yield script
 
