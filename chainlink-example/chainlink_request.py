@@ -58,7 +58,7 @@ GLM_ABI = '\
     }]'
 
 
-class Request:
+class Requests:
     def __init__(self, threads, batch_size, iterations, rpc, contract):
         self.threads_size = threads
         self.batch_size = batch_size
@@ -128,7 +128,7 @@ async def main():
     if args.threads > 0:
         threads_size = args.threads
 
-    await Request(
+    await Requests(
         threads_size, args.batch, args.iterations, args.rpc, args.contract
     ).run()
 
