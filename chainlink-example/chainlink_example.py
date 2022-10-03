@@ -14,12 +14,6 @@ sys.path.append(str(examples_dir))
 CALLS_PER_SECOND = 10_000
 ITERATIONS = 10
 
-from utils import (
-    build_parser,
-    run_golem_example,
-    print_env_info,
-)
-
 class ChainlinkExample(Service):
     @staticmethod
     async def get_payload():
@@ -27,7 +21,7 @@ class ChainlinkExample(Service):
             manifest = open("manifest.json.base64", "rb").read(),
             manifest_sig = open("manifest.json.base64.sign.sha256.base64", "rb").read(),
             manifest_sig_algorithm = "sha256",
-            manifest_cert = open("requestor.crt.pem.base64", "rb").read(),
+            manifest_cert = open("author.crt.pem.base64", "rb").read(),
             min_mem_gib=0.5,
             min_cpu_threads=0.5,
             capabilities=["inet", "manifest-support"],
@@ -55,8 +49,6 @@ async def main(subnet_tag, payment_driver, payment_network):
         payment_driver=payment_driver,
         payment_network=payment_network,
     ) as golem:
-        print_env_info(golem)
-
         cluster = await golem.run_service(ChainlinkExample, num_instances=1)
 
         while True:
@@ -68,16 +60,9 @@ async def main(subnet_tag, payment_driver, payment_network):
 
 
 if __name__ == "__main__":
-    parser = build_parser("Chainlink example")
     now = datetime.now().strftime("%Y-%m-%d_%H.%M.%S")
-    parser.set_defaults(log_file=f"chainlink-example-{now}.log")
-    args = parser.parse_args()
-
-    run_golem_example(
-        main(
-            subnet_tag=args.subnet_tag,
-            payment_driver=args.payment_driver,
-            payment_network=args.payment_network,
-        ),
-        log_file=args.log_file,
-    )
+    asyncio.run(main(
+        subnet_tag="testnet",
+        payment_driver="erc20",
+        payment_network="rinkeby",
+    ))

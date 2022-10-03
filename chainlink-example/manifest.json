@@ -4,7 +4,7 @@
     "expiresAt": "2100-01-01T00:00:00.000000Z",
     "metadata": {
       "name": "Chainlink contract RPC call example",
-      "description": "Example manifest of a service making an outbound call to the external API",
+      "description": "Example manifest of a Python script making an outbound call to RPC API",
       "version": "0.1.0"
     },
     "payload": [
@@ -14,18 +14,16 @@
           "os": "linux"
         },
         "urls": [
-          "http://yacn2.dev.golem.network:8000/docker-golem-script-curl-latest-d75268e752.gvmi"
+          "http://yacn2.dev.golem.network:8000/docker-chainlink-request-example-latest-0b33858692.gvmi"
         ],
-        "hash": "sha3:e5f5ddfd649525dbe25d93d9ed51d1bdd0849933d9a5720adb4b5810"
+        "hash": "sha3:99e055a36c394a91f1c5a016a1e6b0bd55849538f6e6f55934f6991c"
       }
     ],
     "compManifest": {
       "version": "0.1.0",
       "script": {
         "commands": [
-          "run .*curl.*",
-          "run .*request.sh.*",
-          "transfer .*output.txt"
+          "run chainlink_request.py"
         ],
         "match": "regex"
       },
@@ -33,7 +31,7 @@
         "inet": {
           "out": {
             "protocols": ["https"],
-            "urls": ["https://api.coingecko.com", "https://httpbin.org"]
+            "urls": ["https://rpc.ankr.com"]
           }
         }
       }
