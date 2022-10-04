@@ -17,8 +17,8 @@ from utils import (
     print_env_info,
 )
 
-CALLS_PER_SECOND = 10_000
-ITERATIONS = 10
+CALLS_PER_SECOND = 100
+ITERATIONS = 5
 
 class ChainlinkExample(Service):
     @staticmethod
@@ -29,7 +29,7 @@ class ChainlinkExample(Service):
             manifest_sig_algorithm = "sha256",
             manifest_cert = open("author.crt.pem.base64", "r").read(),
             min_mem_gib=0.5,
-            min_cpu_threads=0.5,
+            min_cpu_threads=1,
             capabilities=["inet", "manifest-support"],
         )
 
@@ -40,13 +40,18 @@ class ChainlinkExample(Service):
             "-c",
             f"python /golem/run/chainlink_request.py \
                 --batch {CALLS_PER_SECOND} \
-                --iterations {ITERATIONS}",
+                --iterations {ITERATIONS} \
+                --threads 100",
         )
         yield script
 
-        result = (await future_result).stdout
-        print(result.strip() if result else "")
-
+        result = (await future_result)
+        print("Stdout:")
+        result_out = result.stdout
+        print(result_out.strip() if result_out else "")
+        print("Stderr:")
+        result_err = result.stderr
+        print(result_err.strip() if result_err else "")
 
 async def main(subnet_tag, payment_driver, payment_network):
     async with Golem(
@@ -58,7 +63,6 @@ async def main(subnet_tag, payment_driver, payment_network):
         print_env_info(golem)
         
         cluster = await golem.run_service(ChainlinkExample, num_instances=1)
-
         while True:
             print(cluster.instances)
             try:
