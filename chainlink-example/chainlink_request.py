@@ -12,7 +12,7 @@ import sys
 NUM_CORES = cpu_count()
 
 # AggregatorV3Interface ABI
-GLM_ABI = '\
+ABI = '\
     [{\
         "inputs":[],\
         "name":"decimals",\
@@ -73,7 +73,7 @@ class Requests:
         web3 = Web3(Web3.HTTPProvider(self.rpc))
 
         # Set up contract instance
-        contract = web3.eth.contract(address=self.contract, abi=GLM_ABI)
+        contract = web3.eth.contract(address=self.contract, abi=ABI)
         # Make call to latestRoundData()
         latestData = contract.functions.latestRoundData().call()
         # accessing 'answer' field
