@@ -129,3 +129,4 @@ dmypy.json
 .pyre/
 /.vscode
 docker-chainlink-request-example-latest-*.gvmi
+manifest.json.base64.sign.sha256
