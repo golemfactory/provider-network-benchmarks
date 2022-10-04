@@ -11,6 +11,12 @@ from yapapi.payload import vm
 examples_dir = pathlib.Path(__file__).resolve().parent.parent
 sys.path.append(str(examples_dir))
 
+from utils import (
+    build_parser,
+    run_golem_example,
+    print_env_info,
+)
+
 CALLS_PER_SECOND = 10_000
 ITERATIONS = 10
 
@@ -18,10 +24,10 @@ class ChainlinkExample(Service):
     @staticmethod
     async def get_payload():
         return await vm.manifest(
-            manifest = open("manifest.json.base64", "rb").read(),
-            manifest_sig = open("manifest.json.base64.sign.sha256.base64", "rb").read(),
+            manifest = open("manifest.json.base64", "r").read(),
+            manifest_sig = open("manifest.json.base64.sign.sha256.base64", "r").read(),
             manifest_sig_algorithm = "sha256",
-            manifest_cert = open("author.crt.pem.base64", "rb").read(),
+            manifest_cert = open("author.crt.pem.base64", "r").read(),
             min_mem_gib=0.5,
             min_cpu_threads=0.5,
             capabilities=["inet", "manifest-support"],
@@ -49,6 +55,8 @@ async def main(subnet_tag, payment_driver, payment_network):
         payment_driver=payment_driver,
         payment_network=payment_network,
     ) as golem:
+        print_env_info(golem)
+        
         cluster = await golem.run_service(ChainlinkExample, num_instances=1)
 
         while True:
@@ -58,11 +66,17 @@ async def main(subnet_tag, payment_driver, payment_network):
             except (KeyboardInterrupt, asyncio.CancelledError):
                 break
 
-
 if __name__ == "__main__":
+    parser = build_parser("Chainlink requests example")
     now = datetime.now().strftime("%Y-%m-%d_%H.%M.%S")
-    asyncio.run(main(
-        subnet_tag="testnet",
-        payment_driver="erc20",
-        payment_network="rinkeby",
-    ))
+    parser.set_defaults(log_file=f"chainlink-requests-yapapi-{now}.log")
+    args = parser.parse_args()
+
+    run_golem_example(
+        main(
+            subnet_tag="testnet",
+            payment_driver=args.payment_driver,
+            payment_network=args.payment_network,
+        ),
+        log_file=args.log_file,
+    )
