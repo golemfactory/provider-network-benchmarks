@@ -14,16 +14,16 @@
           "os": "linux"
         },
         "urls": [
-          "http://yacn2.dev.golem.network:8000/docker-chainlink-request-example-latest-0b33858692.gvmi"
+          "http://yacn2.dev.golem.network:8000/docker-chainlink-request-example-latest-a0df0aac67.gvmi"
         ],
-        "hash": "sha3:99e055a36c394a91f1c5a016a1e6b0bd55849538f6e6f55934f6991c"
+        "hash": "sha3:cefa18a6c949c564454b14951f8d9b1fd40f65441cc704354e0da467"
       }
     ],
     "compManifest": {
       "version": "0.1.0",
       "script": {
         "commands": [
-          "run chainlink_request.py"
+          "run .*python.*"
         ],
         "match": "regex"
       },
