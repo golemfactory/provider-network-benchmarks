@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "latestprice"
+name = "chainlink_example"
 version = "0.1.0"
 description = ""
 authors = ["Przemysław Walski <przemyslaw.walski@golem.network>"]
