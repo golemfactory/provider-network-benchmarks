@@ -1,0 +1,41 @@
+{
+  "version": "0.1.0",
+  "createdAt": "2022-07-26T12:51:00.000000Z",
+  "expiresAt": "2100-01-01T00:01:00.000000Z",
+  "metadata": {
+    "name": "External API call example",
+    "description": "Example manifest of a service making an outbound call to the external API",
+    "version": "0.1.0"
+  },
+  "payload": [
+    {
+      "platform": {
+        "arch": "x86_64",
+        "os": "linux"
+      },
+      "urls": [
+        "http://yacn2.dev.golem.network:8000/docker-golem-measure-download-time-1-latest-d61b0e7ef7.gvmi"
+      ],
+      "hash": "sha3:6f213fd13c42dd0e78a474776f0f742db56dd05338ff07594cb73f9b"
+    }
+  ],
+  "compManifest": {
+    "version": "0.1.0",
+    "script": {
+      "commands": ["run .*request.sh.*", "transfer .*output.txt"],
+      "match": "regex"
+    },
+    "net": {
+      "inet": {
+        "out": {
+          "protocols": ["http"],
+          "urls": [
+            "http://192.168.0.10",
+            "http://speedtest.tele2.net",
+            "http://yacn2.dev.golem.network"
+          ]
+        }
+      }
+    }
+  }
+}
