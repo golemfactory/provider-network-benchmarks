@@ -57,20 +57,19 @@ ABI = '\
         "type":"function"\
     }]'
 
-
 class Requests:
-    def __init__(self, threads, batch_size, iterations, rpc, contract):
+    def __init__(self, threads, batch_size, iterations, rpc_urls, contract):
         self.threads_size = threads
         self.batch_size = batch_size
         self.iterations = iterations
-        self.rpc = rpc
+        self.rpc_urls = rpc_urls
         self.contract = contract
 
-    def chainlink_request(self, iteration: int, batch_iteration: int):
+    def chainlink_request(self, iteration: int, batch_iteration: int, rpc_index: int):
         request_time = time.time_ns()
 
         # Change this to use your own infura ID
-        web3 = Web3(Web3.HTTPProvider(self.rpc))
+        web3 = Web3(Web3.HTTPProvider(self.rpc_urls[rpc_index]))
 
         # Set up contract instance
         contract = web3.eth.contract(address=self.contract, abi=ABI)
@@ -88,8 +87,9 @@ class Requests:
         self, executor: concurrent.futures.ThreadPoolExecutor, iteration: int
     ):
         for i in range(self.batch_size):
+            rpc_index = i % len(self.rpc_urls)
             new_future = executor.submit(
-                self.chainlink_request, iteration=iteration, batch_iteration=i
+                self.chainlink_request, iteration=iteration, batch_iteration=i, rpc_index=rpc_index
             )
 
     async def run(self):
@@ -112,7 +112,12 @@ async def main():
     )
     # RPC URL from here https://chainlist.org/chain/1
     parser.add_argument(
-        "-r", "--rpc", default="https://rpc.ankr.com/eth", type=str, help="RPC URL"
+        "-r", "--rpc", default="https://rpc.ankr.com/eth,\
+            https://cloudflare-eth.com,\
+            https://eth-mainnet.public.blastapi.io,\
+            https://eth-rpc.gateway.pokt.network,\
+            https://1rpc.io/eth", 
+        nargs='+', type=str, help="RPC URLs"
     )
     # Contract address from here https://docs.chain.link/docs/data-feeds/price-feeds/addresses/
     parser.add_argument(
@@ -127,9 +132,10 @@ async def main():
     threads_size = NUM_CORES
     if args.threads > 0:
         threads_size = args.threads
+    rpc_urls = args.rpc.split(',')
 
     await Requests(
-        threads_size, args.batch, args.iterations, args.rpc, args.contract
+        threads_size, args.batch, args.iterations, rpc_urls, args.contract
     ).run()
 
 
