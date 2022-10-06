@@ -1,3 +1,4 @@
 #!/bin/sh
-docker build . -t chainlink-request-example:latest;
-gvmkit-build chainlink-request-example:latest --push;
+docker build . -t python-web3:latest;
+gvmkit-build python-web3:latest;
+gvmkit-build python-web3:latest --push;

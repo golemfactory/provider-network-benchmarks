@@ -14,16 +14,17 @@
           "os": "linux"
         },
         "urls": [
-          "http://yacn2.dev.golem.network:8000/docker-chainlink-request-example-latest-a0df0aac67.gvmi"
+          "http://yacn2.dev.golem.network:8000/docker-python-web3-latest-431add6229.gvmi"
         ],
-        "hash": "sha3:cefa18a6c949c564454b14951f8d9b1fd40f65441cc704354e0da467"
+        "hash": "sha3:56f20c1d44ddcfcdd081db9874a20d80901fc8dd88ac70d42a6d2653"
       }
     ],
     "compManifest": {
       "version": "0.1.0",
       "script": {
         "commands": [
-          "run .*python.*"
+          "run .*python.*",
+          "transfer .*chainlink_request.py"
         ],
         "match": "regex"
       },
@@ -31,7 +32,14 @@
         "inet": {
           "out": {
             "protocols": ["https"],
-            "urls": ["https://rpc.ankr.com"]
+            "urls": [
+              "https://rpc.ankr.com/eth",
+              "https://cloudflare-eth.com",
+              "https://eth-mainnet.public.blastapi.io",
+              "https://eth-rpc.gateway.pokt.network",
+              "https://api.securerpc.com/v1",
+              "https://1rpc.io/eth"
+            ]
           }
         }
       }
