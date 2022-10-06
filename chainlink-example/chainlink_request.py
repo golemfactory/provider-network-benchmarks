@@ -104,6 +104,8 @@ class Requests:
             )
 
     async def run(self):
+        run_time = time.time_ns()
+
         with concurrent.futures.ThreadPoolExecutor(self.threads_size) as executor:
             for i in range(self.iterations):
                 print(f"{i}:")
@@ -111,6 +113,10 @@ class Requests:
                 await asyncio.sleep(1)
             executor.shutdown(wait=True, cancel_futures=False)
 
+        run_time = (time.time_ns() - run_time) / 1_000_000_000
+        print(
+            f"Run took {run_time}s"
+        )
 
 async def main():
     parser = argparse.ArgumentParser()
