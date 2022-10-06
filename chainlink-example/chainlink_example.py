@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import asyncio
-from datetime import datetime
+from datetime import datetime, timedelta
 import pathlib
 import sys
 
@@ -17,8 +17,9 @@ from utils import (
     print_env_info,
 )
 
+# 2m16s natively
 CALLS_PER_SECOND = 100
-ITERATIONS = 5
+ITERATIONS = 3
 
 class ChainlinkExample(Service):
     @staticmethod
@@ -28,30 +29,35 @@ class ChainlinkExample(Service):
             manifest_sig = open("manifest.json.base64.sign.sha256.base64", "r").read(),
             manifest_sig_algorithm = "sha256",
             manifest_cert = open("author.crt.pem.base64", "r").read(),
-            min_mem_gib=0.5,
-            min_cpu_threads=1,
+            min_mem_gib=1,
+            min_cpu_threads=10,
             capabilities=["inet", "manifest-support"],
         )
 
     async def run(self):
-        script = self._ctx.new_script()
-        future_result = script.run(
-            "/bin/sh",
-            "-c",
-            f"python /golem/run/chainlink_request.py \
-                --batch {CALLS_PER_SECOND} \
-                --iterations {ITERATIONS} \
-                --threads 100",
-        )
-        yield script
+        try: 
+            script = self._ctx.new_script()
 
-        result = (await future_result)
-        print("Stdout:")
-        result_out = result.stdout
-        print(result_out.strip() if result_out else "")
-        print("Stderr:")
-        result_err = result.stderr
-        print(result_err.strip() if result_err else "")
+            script_dir = pathlib.Path(__file__).resolve().parent
+            script_path = str(script_dir / "chainlink_request.py")
+
+            script.upload_file(script_path, "/golem/in/chainlink_request.py")
+
+            future_result = script.run(
+                "/bin/sh",
+                "-c",
+                f"python /golem/in/chainlink_request.py \
+                    --batch {CALLS_PER_SECOND} \
+                    --iterations {ITERATIONS}",
+            )
+            yield script
+            result = (await future_result)
+
+            print("Stdout:")
+            result_out = result.stdout
+            print(result_out.strip() if result_out else "")
+        except Exception as e:
+            print(f"Fail: {e}")
 
 async def main(subnet_tag, payment_driver, payment_network):
     async with Golem(
