@@ -131,3 +131,4 @@ dmypy.json
 docker-chainlink-request-example-latest-*.gvmi
 manifest.json.base64.sign.sha256
 docker-python-web3-latest-*.gvmi
+node_modules/
