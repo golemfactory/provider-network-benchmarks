@@ -1,48 +1,49 @@
 {
-    "version": "0.1.0",
-    "createdAt": "2022-09-29T00:00:00.000000Z",
-    "expiresAt": "2100-01-01T00:00:00.000000Z",
-    "metadata": {
-      "name": "Chainlink contract RPC call example",
-      "description": "Example manifest of a Python script making an outbound call to RPC API",
-      "version": "0.1.0"
-    },
-    "payload": [
-      {
-        "platform": {
-          "arch": "x86_64",
-          "os": "linux"
-        },
-        "urls": [
-          "http://yacn2.dev.golem.network:8000/docker-python-web3-latest-431add6229.gvmi"
-        ],
-        "hash": "sha3:56f20c1d44ddcfcdd081db9874a20d80901fc8dd88ac70d42a6d2653"
-      }
-    ],
-    "compManifest": {
-      "version": "0.1.0",
-      "script": {
-        "commands": [
-          "run .*python.*",
-          "transfer .*chainlink_request.py"
-        ],
-        "match": "regex"
+  "version": "0.1.0",
+  "createdAt": "2022-09-29T00:00:00.000000Z",
+  "expiresAt": "2100-01-01T00:00:00.000000Z",
+  "metadata": {
+    "name": "Chainlink contract RPC call example",
+    "description": "Example manifest of a Python script making an outbound call to RPC API",
+    "version": "0.1.0"
+  },
+  "payload": [
+    {
+      "platform": {
+        "arch": "x86_64",
+        "os": "linux"
       },
-      "net": {
-        "inet": {
-          "out": {
-            "protocols": ["https"],
-            "urls": [
-              "https://rpc.ankr.com/eth",
-              "https://cloudflare-eth.com",
-              "https://eth-mainnet.public.blastapi.io",
-              "https://eth-rpc.gateway.pokt.network",
-              "https://api.securerpc.com/v1",
-              "https://1rpc.io/eth"
-            ]
-          }
+      "urls": [
+        "http://yacn2.dev.golem.network:8000/docker-python-web3-latest-431add6229.gvmi"
+      ],
+      "hash": "sha3:56f20c1d44ddcfcdd081db9874a20d80901fc8dd88ac70d42a6d2653"
+    }
+  ],
+  "compManifest": {
+    "version": "0.1.0",
+    "script": {
+      "commands": [
+        "run .*python.*",
+        "transfer .*chainlink_request.py"
+      ],
+      "match": "regex"
+    },
+    "net": {
+      "inet": {
+        "out": {
+          "protocols": [
+            "https"
+          ],
+          "urls": [
+            "https://rpc.ankr.com/eth",
+            "https://cloudflare-eth.com",
+            "https://eth-mainnet.public.blastapi.io",
+            "https://eth-rpc.gateway.pokt.network",
+            "https://api.securerpc.com/v1",
+            "https://1rpc.io/eth"
+          ]
         }
       }
     }
   }
-  
+}
