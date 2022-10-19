@@ -125,7 +125,7 @@ async def main():
         "-i", "--iterations", default=5, type=int, help="Number of iterations"
     )
     parser.add_argument(
-        "-t", "--threads", default=0, type=int, help="Number of threads"
+        "-t", "--threads", default=NUM_CORES, type=int, help="Number of threads"
     )
     # RPC URLs from here https://chainlist.org/chain/1
     parser.add_argument(
@@ -152,13 +152,10 @@ https://1rpc.io/eth",
     )
     args = parser.parse_args()
 
-    threads_size = NUM_CORES
-    if args.threads > 0:
-        threads_size = args.threads
     rpc_urls = args.rpc.split(",")
 
     await Requests(
-        threads_size, args.batch, args.iterations, rpc_urls, args.contract
+        args.threads, args.batch, args.iterations, rpc_urls, args.contract
     ).run()
 
 
