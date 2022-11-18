@@ -35,7 +35,7 @@
             "https"
           ],
           "urls": [
-            "https://geth.golem.network:55555"
+            "https://rpc.ankr.com/eth"
           ]
         }
       }

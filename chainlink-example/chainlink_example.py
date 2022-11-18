@@ -31,7 +31,7 @@ from utils import (
 # changed for purpose of testing session
 CALLS_PER_SECOND = 1
 ITERATIONS = 1
-RPCS = "https://geth.golem.network:55555"
+RPCS = "https://rpc.ankr.com/eth"
 
 class ChainlinkExample(Service):
     @staticmethod

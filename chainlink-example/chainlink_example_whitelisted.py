@@ -37,7 +37,7 @@ class ChainlinkExample(Service):
     @staticmethod
     async def get_payload():
         return await vm.manifest(
-            manifest = open("manifest.json.base64", "r").read(),
+            manifest = open("manifest.whitelisted.json.base64", "r").read(),
             min_mem_gib=0.5,
             min_cpu_threads=0.5,
             capabilities=["inet", "manifest-support"],
