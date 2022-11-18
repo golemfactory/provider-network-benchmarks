@@ -120,14 +120,14 @@ class Requests:
 
 async def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-b", "--batch", default=100, type=int, help="Batch size")
+    parser.add_argument("-b", "--batch", default=1, type=int, help="Batch size")
     parser.add_argument(
-        "-i", "--iterations", default=5, type=int, help="Number of iterations"
+        "-i", "--iterations", default=1, type=int, help="Number of iterations"
     )
     parser.add_argument(
         "-t", "--threads", default=NUM_CORES, type=int, help="Number of threads"
     )
-    # RPC URLs from here https://chainlist.org/chain/1
+    # RPC URLs in https://chainlist.org/chain/1
     parser.add_argument(
         "-r",
         "--rpc",
@@ -151,8 +151,10 @@ https://1rpc.io/eth",
         help="Contract address (with 0x prefix)",
     )
     args = parser.parse_args()
-
-    rpc_urls = args.rpc.split(",")
+    
+    rpc_urls = args.rpc
+    if not isinstance(args.rpc, list):
+        rpc_urls = args.rpc.split(",")
 
     await Requests(
         args.threads, args.batch, args.iterations, rpc_urls, args.contract

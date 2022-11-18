@@ -21,10 +21,17 @@ from utils import (
 # # 2m16s natively
 # CALLS_PER_SECOND = 100
 # ITERATIONS = 3
+# RPCS = "https://rpc.ankr.com/eth,\
+# https://cloudflare-eth.com,\
+# https://eth-mainnet.public.blastapi.io,\
+# https://eth-rpc.gateway.pokt.network,\
+# https://api.securerpc.com/v1,\
+# https://1rpc.io/eth"
 
 # changed for purpose of testing session
 CALLS_PER_SECOND = 1
 ITERATIONS = 1
+RPCS = "https://geth.golem.network:55555"
 
 class ChainlinkExample(Service):
     @staticmethod
@@ -34,8 +41,8 @@ class ChainlinkExample(Service):
             manifest_sig = open("manifest.json.base64.sign.sha256.base64", "r").read(),
             manifest_sig_algorithm = "sha256",
             manifest_cert = open("author.crt.pem.base64", "r").read(),
-            min_mem_gib=1,
-            min_cpu_threads=10,
+            min_mem_gib=0.5,
+            min_cpu_threads=0.5,
             capabilities=["inet", "manifest-support"],
         )
 
@@ -53,7 +60,8 @@ class ChainlinkExample(Service):
                 "-c",
                 f"python /golem/in/chainlink_request.py \
                     --batch {CALLS_PER_SECOND} \
-                    --iterations {ITERATIONS}",
+                    --iterations {ITERATIONS} \
+                    --rpc {RPCS}",
             )
             yield script
             result = (await future_result)
@@ -89,7 +97,7 @@ if __name__ == "__main__":
 
     run_golem_example(
         main(
-            subnet_tag="testnet",
+            subnet_tag=args.subnet_tag,
             payment_driver=args.payment_driver,
             payment_network=args.payment_network,
         ),
