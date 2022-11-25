@@ -31,16 +31,13 @@ from utils import (
 # changed for purpose of testing session
 CALLS_PER_SECOND = 1
 ITERATIONS = 1
-RPCS = "https://rpc.ankr.com/eth"
+RPCS = "https://geth.golem.network:55555"
 
 class ChainlinkExample(Service):
     @staticmethod
     async def get_payload():
         return await vm.manifest(
-            manifest = open("manifest.json.base64", "r").read(),
-            manifest_sig = open("manifest.json.base64.sha256.sig.base64", "r").read(),
-            manifest_sig_algorithm = "sha256",
-            manifest_cert = open("examples.crt.chain.pem.base64", "r").read(),
+            manifest = open("manifest.whitelisted.json.base64", "r").read(),
             min_mem_gib=0.5,
             min_cpu_threads=0.5,
             capabilities=["inet", "manifest-support"],

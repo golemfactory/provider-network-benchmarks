@@ -7,7 +7,7 @@ authors = ["Przemysław Walski <przemyslaw.walski@golem.network>"]
 [tool.poetry.dependencies]
 python = "^3.8"
 web3 = "^5.30.0"
-yapapi = { git = "https://github.com/golemfactory/yapapi.git" }
+yapapi = { git = "https://github.com/golemfactory/yapapi.git", tag = "0.10.0-alpha.1" }
 
 [tool.poetry.dev-dependencies]
 
